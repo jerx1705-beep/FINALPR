@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore - Tienda de Libros</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- MODAL DE LOGIN (Visible inicialmente) -->
+    <div id="modalLogin" class="modal-login-container">
+        <div class="login-box">
+            <h1>📚 BookStore</h1>
+            <div class="tabs-auth">
+                <button class="tab-btn active" onclick="cambiarTab('login')">Iniciar Sesión</button>
+                <button class="tab-btn" onclick="cambiarTab('registro')">Registrarse</button>
+            </div>
+
+            <!-- Login -->
+            <div id="tabLogin" class="tab-content active">
+                <form onsubmit="handleLogin(event)">
+                    <input type="text" id="usuarioLogin" placeholder="Usuario" required>
+                    <input type="password" id="passwordLogin" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+                <p class="info-demo">📌 Demo: alumno / 2025</p>
+            </div>
+
+            <!-- Registro -->
+            <div id="tabRegistro" class="tab-content">
+                <form onsubmit="handleRegistro(event)">
+                    <input type="text" id="nombreReg" placeholder="Nombre completo" required>
+                    <input type="email" id="emailReg" placeholder="Correo electrónico" required>
+                    <input type="password" id="passwordReg" placeholder="Contraseña" required>
+                    <input type="text" id="direccionReg" placeholder="Dirección" required>
+                    <input type="tel" id="telefonoReg" placeholder="Teléfono" required>
+                    <button type="submit">Registrarse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA PRINCIPAL (Oculta inicialmente) -->
+    <div id="paginaPrincipal" class="pagina-principal" style="display: none;">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">📚 BookStore</h1>
+                <div class="nav-links">
+                    <a href="#catalogo" class="nav-link">Catálogo</a>
+                    <a href="#contacto" class="nav-link">Contacto</a>
+                    <button id="btnCerrarSesion" class="btn-cerrar">👤 <span id="nombreUsuario"></span> - Cerrar Sesión</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-contenido">
+                <h1>Bienvenido a BookStore</h1>
+                <p>libros para toda la familia</p>
+                <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="btn-primary">Explorar Catálogo</button>
+            </div>
+        </section>
+
+        <!-- Info Tienda -->
+        <section class="info-tienda">
+            <div class="info-card">
+                <h3>📖 Gran Variedad</h3>
+                <p>Más de 10,000 títulos en diferentes géneros</p>
+            </div>
+            <div class="info-card">
+                <h3>🚚 Envío Rápido</h3>
+                <p>Entrega en 2-3 días hábiles a todo el país</p>
+            </div>
+            <div class="info-card">
+                <h3>💰 Mejores Precios</h3>
+                <p>Promociones especiales y descuentos exclusivos</p>
+            </div>
+            <div class="info-card">
+                <h3>⭐ Garantía</h3>
+                <p>Libros en perfecto estado o tu dinero de vuelta</p>
+            </div>
+        </section>
+
+        <!-- Catálogo -->
+        <section id="catalogo" class="catalogo">
+            <h2>Nuestro Catálogo</h2>
+            
+            <div class="filtros">
+                <select id="filtroCategoria" class="filtro-select" onchange="filtrarLibros()">
+                    <option value="">Todas las Categorías</option>
+                    <option value="ficcion">Ficción</option>
+                    <option value="novela">Novela</option>
+                    <option value="suspenso">Suspenso</option>
+                    <option value="infantil">Infantil</option>
+                    <option value="autoayuda">Autoayuda</option>
+                </select>
+            </div>
+
+            <div id="librosContainer" class="libros-grid"></div>
+        </section>
+
+        <section class="video-section">
+            <h2>Nuestros Mejores Títulos</h2>
+            <div class="video-container">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/mJzOLghzUwA" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Contacto -->
+        <section id="contacto" class="contacto">
+            <h2>Contáctanos</h2>
+            <div class="contacto-info">
+                <p>📧 Email: info@bookstore.com</p>
+                <p>📞 Teléfono: +502 78456321</p>
+                <p>📍 Dirección: Calle Principal 123, Guatemala</p>
+            </div>
+        </section>
+
+        <!-- Carrito Flotante -->
+        <div class="carrito-flotante">
+            <button id="btnCarrito" class="btn-carrito">
+                🛒 Carrito <span id="contadorCarrito" class="contador">0</span>
+            </button>
+        </div>
+
+        <!-- Modal Carrito -->
+        <div id="modalCarrito" class="modal-carrito">
+            <div class="modal-contenido">
+                <span class="cerrar-modal" onclick="cerrarModalCarrito()">&times;</span>
+                <h2>Tu Carrito de Compras</h2>
+                <div id="carritoItems" class="carrito-items"></div>
+                <div class="carrito-resumen">
+                    <p>Subtotal: Q<span id="subtotal">0.00</span></p>
+                    <p>Impuesto (12%): Q<span id="impuesto">0.00</span></p>
+                    <hr>
+                    <p class="total">Total: Q<span id="totalCarrito">0.00</span></p>
+                </div>
+                <button id="btnContinuar" class="btn-primary" onclick="irACheckout()" style="width: 100%; margin-top: 20px;">Continuar Compra</button>
+            </div>
+        </div>
+
+        <!-- Modal Checkout -->
+        <div id="modalCheckout" class="modal-carrito">
+            <div class="modal-contenido checkout-modal">
+                <span class="cerrar-modal" onclick="cerrarModalCheckout()">&times;</span>
+                <h2>Completa tu Compra</h2>
+                
+                <div class="checkout-grid">
+                    <!-- Formulario -->
+                    <div class="checkout-seccion">
+                        <h3>📋 Datos Personales</h3>
+                        <form id="formularioCheckout">
+                            <input type="text" id="nombre" placeholder="Nombre Completo" required>
+                            <input type="email" id="emailCheckout" placeholder="Correo Electrónico" required>
+                            <input type="tel" id="telefonoCheckout" placeholder="Teléfono" required>
+                            <textarea id="direccionCheckout" placeholder="Dirección" rows="3" required></textarea>
+                            <input type="text" id="ciudad" placeholder="Ciudad" required>
+                            <input type="text" id="codigoPostal" placeholder="Código Postal" required>
+
+                            <h3 style="margin-top: 20px;">🚚 Método de Envío</h3>
+                            <label class="radio-option">
+                                <input type="radio" name="envio" value="estandar" checked>
+                                <span><strong>Estándar</strong> - Q39.00 (3-5 días)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="envio" value="express">
+                                <span><strong>Express</strong> - Q116.00 (1-2 días)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="envio" value="urgente">
+                                <span><strong>Urgente</strong> - Q193.00 (Día siguiente)</span>
+                            </label>
+
+                            <h3 style="margin-top: 20px;">💳 Método de Pago</h3>
+                            <label class="radio-option">
+                                <input type="radio" name="pago" value="tarjeta" checked>
+                                <span><strong>Tarjeta de Crédito/Débito</strong></span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pago" value="paypal">
+                                <span><strong>PayPal</strong></span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="pago" value="transferencia">
+                                <span><strong>Transferencia Bancaria</strong></span>
+                            </label>
+
+                            <h3 style="margin-top: 20px;">✨ Opciones Adicionales</h3>
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="regalo">
+                                <span>Empacar como regalo (+Q15.50)</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="notificacion" checked>
+                                <span>Notificarme sobre mi pedido</span>
+                            </label>
+
+                            <h3 style="margin-top: 20px;">📝 Notas Especiales</h3>
+                            <textarea id="notas" placeholder="Ej: Por favor dejar en la puerta" rows="3" maxlength="250"></textarea>
+
+                            <label class="checkbox-option" style="margin-top: 15px;">
+                                <input type="checkbox" id="politicas" required>
+                                <span>Acepto los términos y condiciones</span>
+                            </label>
+                        </form>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div class="checkout-seccion">
+                        <h3>📦 Resumen de tu Pedido</h3>
+                        <div id="resumenLibros" class="resumen-libros"></div>
+                        <div id="detallesPago" class="detalles-pago"></div>
+                        
+                        <div class="botones-checkout">
+                            <button class="btn-volver" onclick="cerrarModalCheckout()">← Volver</button>
+                            <button class="btn-completar" onclick="completarCompra()">✓ Completar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Confirmación -->
+        <div id="modalConfirmacion" class="modal-carrito">
+            <div class="modal-contenido confirmacion-modal">
+                <h1 style="text-align: center; color: #27ae60;">✓ ¡COMPRA CONFIRMADA!</h1>
+                <div id="confirmacionContenido"></div>
+                <button class="btn-primary" onclick="volverATienda()" style="width: 100%; margin-top: 20px;">🏠 Volver a la Tienda</button>
+                <button class="btn-volver" onclick="window.print()" style="width: 100%; margin-top: 10px;">🖨️ Imprimir Recibo</button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2025 BookStore. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
