@@ -11,7 +11,7 @@ const libros = [
     { id: 8, titulo: "Orgullo y Prejuicio", autor: "Jane Austen", precio: 330, categoria: "ficcion", descripcion: "Un romance clásico y cautivador", calificacion: "⭐⭐⭐⭐", imagen: "https://images.justwatch.com/poster/203481059/s718/orgullo-y-prejuicio.jpg" },
     { id: 9, titulo: "El Hobbit", autor: "J.R.R. Tolkien", precio: 220, categoria: "ficcion", descripcion: "Una aventura fantástica memorable", calificacion: "⭐⭐⭐⭐⭐", imagen: "https://tharaiticketu.files.wordpress.com/2014/07/the-hobbit-the-battle-of-the-five-armies-poster.jpg?w=382&h=568&crop=1" },
     { id: 10, titulo: "1984", autor: "George Orwell", precio: 170, categoria: "suspenso", descripcion: "Una distopía inquietante y profunda", calificacion: "⭐⭐⭐⭐", imagen: "https://lectorvoraz.com/wp-content/uploads/2022/11/978849989094.jpg" },
-    { id: 11, titulo: "Cien Años de Soledad", autor: "Gabriel García Márquez", precio: 225, categoria: "novela", descripcion: "Un clásico del realismo mágico", calificacion: "⭐⭐⭐⭐⭐", imagen: "https://static.wikia.nocookie.net/muyinteresante/images/3/38/9788497592208.jpg/revision/latest/scale-to-width-down/314?cb=20170908093803&path-prefix=es" },
+    { id: 11, titulo: "Cien Años de Soledad", autor: "Gabriel García Márquez", precio: 225, categoria: "novela", descripcion: "Un clásico del realismo mágico", calificacion: "⭐⭐⭐⭐⭐", imagen: "https://m.media-amazon.com/images/M/MV5BMjFjNTdiMmQtZjQ5Yi00MWMzLWJjMWMtNmI1ZTgzYmE5NjNiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" },
 ];
 
 
